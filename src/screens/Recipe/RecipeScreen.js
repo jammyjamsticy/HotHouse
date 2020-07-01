@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import styles from './styles';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-import { getIngredientName, getCategoryName, getCategoryById } from '../../data/MockDataAPI';
+import { getIngredientName, getCategoryName, getCategoryById, getVegan } from '../../data/MockDataAPI';
 import BackButton from '../../components/BackButton/BackButton';
 import ViewIngredientsButton from '../../components/ViewIngredientsButton/ViewIngredientsButton';
 
@@ -34,7 +34,8 @@ export default class RecipeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeSlide: 0
+      activeSlide: 0,
+      vegan: null
     };
   }
 
@@ -51,14 +52,30 @@ export default class RecipeScreen extends React.Component {
     let ingredient = item;
     this.props.navigation.navigate('Ingredient', { ingredient, name });
   };
+  _displayIcon = (val) => {
 
+
+    if (val === 'Y') {
+      console.log("Yes");
+
+      return(<View ><Image style={styles.infoIcon} source={require('../../../assets/vegan.png')} />
+      </View>
+      )
+    } else {
+      console.log("No");
+      return null;
+    }
+
+
+  }
   render() {
     const { activeSlide } = this.state;
     const { navigation } = this.props;
     const item = navigation.getParam('item');
     const category = getCategoryById(item.categoryId);
     const title = getCategoryName(category.id);
-
+    
+    this.state.vegan = item.vegan;
     return (
       <ScrollView style={styles.container}>
         <View style={styles.carouselContainer}>
@@ -94,20 +111,26 @@ export default class RecipeScreen extends React.Component {
             />
           </View>
         </View>
+
         <View style={styles.infoRecipeContainer}>
           <Text style={styles.infoRecipeName}>{item.title}</Text>
-          <View style={styles.infoContainer}>
+          {/* <View style={styles.infoContainer}>
             <TouchableHighlight
               onPress={() => navigation.navigate('RecipesList', { category, title })}
             >
               <Text style={styles.category}>{getCategoryName(item.categoryId).toUpperCase()}</Text>
             </TouchableHighlight>
-          </View>
+          </View> */}
+ {this._displayIcon(this.state.vegan)}   
 
+
+          {/* <Text>{this.state.vegan}</Text> */}
+        
           <View style={styles.infoContainer}>
             <Image style={styles.infoPhoto} source={require('../../../assets/icons/time.png')} />
             <Text style={styles.infoRecipe}>{item.time} minutes </Text>
           </View>
+
 
           <View style={styles.infoContainer}>
             <ViewIngredientsButton

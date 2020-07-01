@@ -25,12 +25,11 @@ export default class RecipesListScreen extends React.Component {
   };
 
   renderRecipes = ({ item }) => (
-    <TouchableHighlight underlayColor='rgba(73,182,77,1,0.9)' onPress={() => this.onPressRecipe(item)}>
+    <TouchableHighlight  onPress={() => this.onPressRecipe(item)}>
       <View style={styles.container}>
         <Image style={styles.photo} source={{ uri: item.photo_url }} />
         <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.category}>{getCategoryName(item.categoryId)}</Text>
-      </View>
+        </View>
     </TouchableHighlight>
   );
 

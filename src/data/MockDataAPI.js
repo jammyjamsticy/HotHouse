@@ -1,6 +1,6 @@
 import { Text } from 'react-native';
 import React, { Component } from 'react';
-import { recipes, categories, ingredients } from './dataArrays';
+import { recipes, categories, ingredients,vegan } from './dataArrays';
 
 export function getCategoryById(categoryId) {
   let category;
@@ -32,6 +32,15 @@ export function getIngredientUrl(ingredientID) {
   return url;
 }
 
+export function getVegan(categoryId) {
+  let vegan;
+  categories.map(data => {
+    if (data.id == categoryId) {
+      vegan = data.vegan;
+    }
+  });
+  return vegan;
+}
 export function getCategoryName(categoryId) {
   let name;
   categories.map(data => {

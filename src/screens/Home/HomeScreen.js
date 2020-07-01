@@ -38,7 +38,9 @@ export default class HomeScreen extends React.Component {
 
   render() {
     return (
-      <View>
+      <View  style={styles.containerPhoto}>
+      <Image style={styles.photoScreen} source={require('../../../assets/Home.png')} />
+
         {/* <FlatList
           vertical
           showsVerticalScrollIndicator={false}

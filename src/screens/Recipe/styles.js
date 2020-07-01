@@ -60,6 +60,12 @@ const styles = StyleSheet.create({
     width: 20,
     marginRight: 0
   },
+  infoIcon: {
+    height: 40,
+    width: 40,
+    marginRight: 0,
+    marginBottom:10
+  },
   infoRecipe: {
     fontSize: 14,
     fontWeight: 'bold',

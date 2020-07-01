@@ -3,17 +3,18 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   categoriesItemContainer: {
     flex: 1,
-    margin: 10,
+    margin: 20,
     justifyContent: 'center',
     alignItems: 'center',
     height: 215,
     borderColor: '#cccccc',
+    backgroundColor:'#ffffff',
     borderWidth: 0.5,
     borderRadius: 20,
   },
   categoriesPhoto: {
     width: '100%',
-    height: 155,
+    height: 170,
     borderRadius: 20,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,

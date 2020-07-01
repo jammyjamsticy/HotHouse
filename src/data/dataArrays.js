@@ -1,27 +1,26 @@
+import { Asset } from 'expo-asset';
+const imageBurnCalorieURI = Asset.fromModule(require('../../assets/Burn_Calories_Full.png')).uri;
+const imageFoodGalleryURI = Asset.fromModule(require('../../assets/Food_gallery_Full.png')).uri;
+const imageDontKnowURI = Asset.fromModule(require('../../assets/DontKnowWhatToCook_Full.png')).uri;
+const imageIkanPariCurryURI = Asset.fromModule(require('../../assets/Ikan_Pari_Curry.png')).uri;
+const imagePeachCakeURI = Asset.fromModule(require('../../assets/PeachCake.png')).uri;
+const imageVeganIconURI = Asset.fromModule(require('../../assets/vegan.png')).uri;
 export const categories = [
   {
     id: 3,
     name: 'Dont Know What to cook',
-    photo_url:
-    ''
+    photo_url:imageDontKnowURI
   },
   {
     id: 1,
     name: 'Food Gallery',
-    photo_url: ''
+    photo_url: imageFoodGalleryURI
   },
   {
     id: 2,
-    name: 'Want TO burn Some Calories',
-    photo_url:
-      ''
-  },
-  {
-    id: 4,
-    name: 'No Correct Tool',
-    photo_url:
-    ''
-  },
+    name: 'Burn Calories',
+    photo_url: imageBurnCalorieURI
+  }
   
 ];
 
@@ -212,6 +211,66 @@ export const recipes = [
     description:
       '-- In a large bowl, combine 2 tablespoons oil, lemon juice and seasonings; add the chicken. Turn to coat; cover. Refrigerate for 1-4 hours In a large skillet, saute peppers and onions in remaining oil until crisp-tender. Remove and keep warm. Drain chicken, discarding marinade. In the same skillet, cook chicken over medium-high heat for 5-6 minutes or until no longer pink.\n\n -- Return pepper mixture to pan; heat through. Spoon filling down the center of tortillas; fold in half. Serve with toppings as desired.'
   },
+
+  //Added Ikan Curry
+  {
+    recipeId: 10,
+    categoryId: 1,
+    title: 'Ikan Pari Curry',
+    photo_url:imageIkanPariCurryURI,
+    photosArray: [imageIkanPariCurryURI],
+    time: 35,
+    ingredients: [
+      [9, '1/2 teaspoons'],
+      [0, '4 tablespoons'],
+      [1, '1/2 teaspoons'],
+      [30, '2 tablespoons'],
+      [31, '1 teaspoon'],
+      [7, '1 teaspoon'],
+      [24, '1/2 teaspoons'],
+      [3, '1/2 teaspoons'],
+      [21, '1 pound'],
+      [22, '1/2 cup'],
+      [27, '6'],
+      [36, '4'],
+      [37, '1/2'],
+      [38, '1/2']
+    ],
+    description:
+    '-- I have tried to cook Ikan Pari Curry for the first time in my life 😊 I don\'t think I would have put myself out there like that if it weren\'t for my mother. She taught me how to cook. Yes ,I don’t like to eat fish when I was kid ,and more over a big NO for Ikan Pari . 1 day My mom feed me food and mentioned its vege meet ,but it is not she feed me Ikan Pari OMG After i taste the fish that time until today I love to eat fish ,my mom is very good in playing hide and seek with me when small time and she use that same method to make me to eat Fish . Ikan Pari Curry is my grandmother recipe ,then my mom learn to cook it form her and now she had teach me as well to cook a very Good and Tasty Fish Curry . I just love to cook day by day when ever I felt bored and my mom is the best teacher for me ever . #foodislife \n\n	-- Ikan Pari Curry !!! 1 Sliced Onion , 1 Small spoon – Mix spices , Ginger & Garlic 4 pcs – Paste , Curry leave 1 Eggplant, 1 Tomato , 5/6 spoon Baba’s Fish curry powder Mix with water, Then add in 5 cup water cook for 10min , Add in salt , Add in “ Ikan Pari “, Add in “Tamarind” which already mix with water and filter the seeds , cook 5-10min until the fish cooked well , last but not least add in – 5 Lady Fingers , Then Cook for 5min and ………. Ikan Pari Curry Is Ready To serve Don’t forget to try The Recipe Yummy…yummy…'
+  },
+
+  {
+    recipeId: 11,
+    categoryId: 1,
+    title: 'Peach Cake',
+    photo_url:imagePeachCakeURI,
+    photosArray: [imagePeachCakeURI],
+    time: 35,
+    vegan:'Y',
+    // icon_vegan:imageVeganIconURI,
+    ingredients: [
+      [9, '1/2 teaspoons'],
+      [0, '4 tablespoons'],
+      [1, '1/2 teaspoons'],
+      [30, '2 tablespoons'],
+      [31, '1 teaspoon'],
+      [7, '1 teaspoon'],
+      [24, '1/2 teaspoons'],
+      [3, '1/2 teaspoons'],
+      [21, '1 pound'],
+      [22, '1/2 cup'],
+      [27, '6'],
+      [36, '4'],
+      [37, '1/2'],
+      [38, '1/2']
+    ],
+    description:
+' -- Wan Kamg Chan\’s Story	Memorable cake as first date birthday cake and wedding anniversary cake for loving couple. Homemade, nice, simple and healthy. \n\n -- 1. Mix (B) then add it into (A) and stir constantly till well blended, then bring it into the boil. 2. Add (C) and (D) mix till evenly blended 3. Arrange (E) on the bottom of a 9" round mould (any mould shape prefer). Pour the above konnyaku syrup onto it and let it 3/4 set. Bottom: 1. Mix (B) add it into (A) and mix till well blended and bring to the boil. Add the premixed (C) slowly and continue to cook till mixture thickens. 2. Pour it onto the peach konnayku and let it cool and refrigerate. 3. Remove from mould and serve cold.'
+  },
+
+
+
   {
     recipeId: 6,
     categoryId: 2,

@@ -183,7 +183,10 @@ export default class CalorieCounterScreen extends Component {
     return (
       <ScrollView >
 
-         {this.state.rdata.map(element => <Card><Text  onLongPress={this._displayDetails}>{element.name}</Text></Card>)} 
+         {this.state.rdata.map(element => <Card>
+           <Text  onLongPress={this._displayDetails}>Name : {element.name}  </Text>
+           <Text  >Calorie : {element.name}  </Text>
+         </Card>)} 
 
 
 

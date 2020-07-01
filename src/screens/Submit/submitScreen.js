@@ -22,7 +22,7 @@ import * as ImagePicker from "expo-image-picker";
 import Card from '../../components/Card';
 import Colors from '../../constants/colors';
 
-import { CheckBox } from 'react-native-elements';
+import { CheckBox, Icon } from 'react-native-elements';
 import Textarea from 'react-native-textarea';
 
 export default class App extends Component {
@@ -76,6 +76,32 @@ export default class App extends Component {
 
           <Card style={styles.inputContainer1}>
             <Text style={styles.exampleText1}>ingredients</Text>
+            <View style={styles.viewTextContainer}>
+
+              <TextInput
+                containerStyle={styles.textNameContainer}
+                style={styles.textName}
+                placeholder="Name"
+              />
+              <TextInput
+                containerStyle={styles.textAmtContainer}
+                style={styles.textAmt}
+                placeholder="Amt"
+              />
+              <TextInput
+                containerStyle={styles.textMetContainer}
+                style={styles.textMet}
+                placeholder="Metric"
+              />
+              <Icon
+              raised
+              name="plus-square"
+              type="font-awesome"
+              color="red"
+              size={15}
+              onPress={() => this.goToStore()}
+            />
+            </View>
           </Card>
 
           <Textarea
@@ -100,7 +126,6 @@ export default class App extends Component {
             title="SUBMIT"
             onPress={() => Alert.alert('Simple Button pressed')}
           />
-          
 
         </View>
       </ScrollView  >
@@ -297,6 +322,11 @@ const styles = StyleSheet.create({
     marginTop: 20
 
   },
+  viewTextContainer: {
+    width: '75%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   inputContainer: {
     width: 300,
     maxWidth: '80%',
@@ -318,9 +348,56 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     margin: 8,
   },
+  textNameContainer: {
+    height: 10,
+    //padding: 5,
+    //backgroundColor: '#F5FCFF',
+  },
+  textName: {
+    textAlignVertical: 'top',  // hack android
+    height: 40,
+    fontSize: 14,
+    borderColor: 'gray',
+    width: "50%",
+    borderWidth: 1,
+    marginBottom: 20,
+    margin: 8,
+  },
+  textAmtContainer: {
+    height: 10,
+    //padding: 5,
+    //backgroundColor: '#F5FCFF',
+  },
+  textAmt: {
+    textAlignVertical: 'top',  // hack android
+    height: 40,
+    fontSize: 14,
+    borderColor: 'gray',
+    width: "25%",
+    borderWidth: 1,
+    marginBottom: 20,
+    margin: 8,
+  },
+  textMetContainer: {
+    height: 10,
+    //padding: 5,
+    //backgroundColor: '#F5FCFF',
+  },
+  textMet: {
+    textAlignVertical: 'top',  // hack android
+    height: 40,
+    fontSize: 14,
+    borderColor: 'gray',
+    width: "25%",
+    borderWidth: 1,
+    marginBottom: 20,
+    margin: 8,
+    
+  },
   textareaContainer: {
     height: 180,
     padding: 5,
+    alignItems: 'center',
     //backgroundColor: '#F5FCFF',
   },
   textarea: {
@@ -334,15 +411,15 @@ const styles = StyleSheet.create({
     margin: 8,
   },
   exampleText1: {
-    textAlignVertical: 'top',
+    //textAlignVertical: 'top',
     marginBottom: 20,
     marginHorizontal: 15,
     margin: 8,
   },
   inputContainer1: {
-    width: 300,
-    maxWidth: '80%',
-    // alignItems: 'center',
-    marginTop: 20
+    textAlignVertical: 'top',
+    alignItems: 'center',
+    width: '75%',
+    marginTop: 20,
   },
 });
