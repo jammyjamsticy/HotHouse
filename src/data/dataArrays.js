@@ -268,9 +268,6 @@ export const recipes = [
     description:
 ' -- Wan Kamg Chan\’s Story	Memorable cake as first date birthday cake and wedding anniversary cake for loving couple. Homemade, nice, simple and healthy. \n\n -- 1. Mix (B) then add it into (A) and stir constantly till well blended, then bring it into the boil. 2. Add (C) and (D) mix till evenly blended 3. Arrange (E) on the bottom of a 9" round mould (any mould shape prefer). Pour the above konnyaku syrup onto it and let it 3/4 set. Bottom: 1. Mix (B) add it into (A) and mix till well blended and bring to the boil. Add the premixed (C) slowly and continue to cook till mixture thickens. 2. Pour it onto the peach konnayku and let it cool and refrigerate. 3. Remove from mould and serve cold.'
   },
-
-
-
   {
     recipeId: 6,
     categoryId: 2,
