@@ -7,17 +7,24 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
-  TouchableHighlight
+  TouchableHighlight,
+  Share,
+  Alert,
+  Modal
 } from 'react-native';
 import styles from './styles';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { getIngredientName, getCategoryName, getCategoryById, getVegan } from '../../data/MockDataAPI';
 import BackButton from '../../components/BackButton/BackButton';
 import ViewIngredientsButton from '../../components/ViewIngredientsButton/ViewIngredientsButton';
-
+import { Asset } from 'expo-asset';
+import { Video } from 'expo-av';
 const { width: viewportWidth } = Dimensions.get('window');
 
 export default class RecipeScreen extends React.Component {
+
+ 
+
   static navigationOptions = ({ navigation }) => {
     return {
       headerTransparent: 'true',
@@ -35,7 +42,8 @@ export default class RecipeScreen extends React.Component {
     super(props);
     this.state = {
       activeSlide: 0,
-      vegan: null
+      vegan: null,
+    modalVisible: false
     };
   }
 
@@ -46,25 +54,96 @@ export default class RecipeScreen extends React.Component {
       </View>
     </TouchableHighlight>
   );
+  _share = () => {
+    // Alert.alert(this.state.des);
 
+    Share.share({
+      message: this.state.des,
+      title: this.state.title,
+
+
+    });
+
+
+
+  };
   onPressIngredient = item => {
     var name = getIngredientName(item);
     let ingredient = item;
     this.props.navigation.navigate('Ingredient', { ingredient, name });
   };
-  _displayIcon = (val) => {
-
-
-    if (val === 'Y') {
+  _setModalVisible = (val) => {
+    this.setState({
+      modalVisible: val
+    });
+  };
+  _displayVideoIcon = (item) => {
+    if (item.video === 'Y') {
       console.log("Yes");
 
-      return(<View ><Image style={styles.infoIcon} source={require('../../../assets/vegan.png')} />
-      </View>
+      return (
+        <View>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={this.state.modalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+              <Video
+  source={{ uri: item.video_url }}
+  rate={1.0}
+  volume={1.0}
+  isMuted={false}
+  resizeMode="cover"
+  shouldPlay
+  
+  style={{ width: 300, height: 300 }}
+/>
+
+                <TouchableHighlight
+                  style={{ ...styles.openButton, backgroundColor: "#2196F3",marginTop:10 }}
+                  onPress={() => {
+                    this._setModalVisible(!this.state.modalVisible);
+                  }}
+                >
+                  <Text style={styles.textStyle}>Close</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </Modal>
+
+          <TouchableHighlight
+
+            onPress={() => {
+              this._setModalVisible(true);
+            }}>
+            <Image style={styles.infoIcon} source={{ uri: item.video_icon }} />
+          </TouchableHighlight>
+        </View>
       )
     } else {
       console.log("No");
       return null;
     }
+  }
+  _displayVeganIcon = (item) => {
+
+
+    if (item.vegan === 'Y') {
+      console.log("Yes");
+
+      return (<Image style={styles.infoIcon} source={{ uri: item.icon_vegan }} />
+
+      )
+    } else {
+      console.log("No");
+      return null;
+    }
+
 
 
   }
@@ -74,7 +153,7 @@ export default class RecipeScreen extends React.Component {
     const item = navigation.getParam('item');
     const category = getCategoryById(item.categoryId);
     const title = getCategoryName(category.id);
-    
+    this.state.des = item.description;
     this.state.vegan = item.vegan;
     return (
       <ScrollView style={styles.container}>
@@ -121,11 +200,19 @@ export default class RecipeScreen extends React.Component {
               <Text style={styles.category}>{getCategoryName(item.categoryId).toUpperCase()}</Text>
             </TouchableHighlight>
           </View> */}
- {this._displayIcon(this.state.vegan)}   
-
+          <View style={{ flex: 1, flexDirection: 'row' }}>
+            {this._displayVeganIcon(item)}
+            {this._displayVideoIcon(item)}
+            <TouchableOpacity onPress={() => this._share()} >
+              <View  >
+                <Image
+                  style={styles.infoIcon} source={require('../../../assets/share.png')} />
+              </View>
+            </TouchableOpacity>
+          </View>
 
           {/* <Text>{this.state.vegan}</Text> */}
-        
+
           <View style={styles.infoContainer}>
             <Image style={styles.infoPhoto} source={require('../../../assets/icons/time.png')} />
             <Text style={styles.infoRecipe}>{item.time} minutes </Text>

@@ -12,6 +12,8 @@ import {
   ScrollView,
   View,
   FlatList,
+  Modal,
+  TouchableHighlight
 
 } from "react-native";
 import styles from './styles';
@@ -21,6 +23,7 @@ import * as ImagePicker from "expo-image-picker";
 
 import Card from '../../components/Card';
 import Colors from '../../constants/colors';
+import Icon from 'react-native-vector-icons/FontAwesome';
 export default class CalorieCounterScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -30,38 +33,62 @@ export default class CalorieCounterScreen extends Component {
   state = {
     image: null,
     uploading: false,
-    rdata: null
+    rdata: null,
+    modalVisible: false,
+    modalData: {}
   };
 
   render() {
     let { image } = this.state;
     let { rdata } = this.state;
     return (
-      <ScrollView>
+      <ScrollView sytle={{ backgroundColor: "#ffffff" }}>
         <View style={styles.container}>
           {/* <Header title="My Calorie Counter" /> */}
           <StatusBar barStyle="default" />
 
-          <Card style={styles.inputContainer}>
+          <Card style={styles.inputContainer} >
             <Text style={styles.exampleText}>
-              Upload Your Food
+              Know Your Food
         </Text>
             <View style={styles.buttonContainer}>
               <View style={styles.button}>
-                <Button
+                {/* <Button
                   onPress={this._pickImage}
                   title="Gallery"
                   color={Colors.primary}
-                /></View>
-              <View style={styles.button}>
-                <Button onPress={this._takePhoto} title="Camera" color={Colors.success} />
+                /> */}
+                <TouchableOpacity onPress={this._pickImage} >
+                  <Image style={{
+                    width: 106, height: 106, borderRadius: 106 / 2, shadowColor: '#202020',
+                    shadowOffset: { width: 0, height: 0 },
+                    shadowRadius: 5,
+                  }} source={require('../../../assets/GalleryIcon.png')} />
+                </TouchableOpacity>
               </View>
+              <View style={styles.button}>
+                {/* <Button onPress={this._takePhoto} title="Camera" color={Colors.success} /> */}
+                <TouchableOpacity onPress={this._takePhoto} >
+                  <Image style={{
+                    marginTop: 5, width: 100, height: 100, borderRadius: 100 / 2, shadowColor: 'black',
+                    shadowOffset: { width: 7, height: 7 },
+                    shadowRadius: 5,shadowOpacity: 0.26,
+                    borderColor: 'black',
+                    elevation:1,
+                  }} source={require('../../../assets/CameraIcon.png')} />
+                </TouchableOpacity>
+              </View>
+
+            </View>
+            <View style={{ alignItems: "center", justifyContent: "center" }}>
+              {this._maybeRenderImage()}
+              {this._maybeRenderUploadingOverlay()}
+              {/* {this._showNutrition()} */}
+              {this._diaplayModal()}
             </View>
           </Card>
 
-          {this._maybeRenderImage()}
-          {this._maybeRenderUploadingOverlay()}
-          {/* {this._showNutrition()} */}
+
 
         </View>
       </ScrollView  >
@@ -86,7 +113,7 @@ export default class CalorieCounterScreen extends Component {
     }
 
     return (
-      <Card >
+      <View>
         <View style={styles.maybeRenderImageContainer}>
           <Image source={{ uri: image }} style={styles.maybeRenderImage} />
         </View>
@@ -98,7 +125,7 @@ export default class CalorieCounterScreen extends Component {
         >
         </Text>
         {this._showNutrition()}
-      </Card>
+      </View>
 
     );
   };
@@ -162,15 +189,97 @@ export default class CalorieCounterScreen extends Component {
     }
   };
   _renderItem = element => {
-    <TouchableOpacity>
-      <Text>Test</Text>
-    </TouchableOpacity>
-
     console.log("item is :: " + element.name);
+    return (
+      <TouchableOpacity>
+        <Text>Test</Text>
+      </TouchableOpacity>
+    )
+
   };
-  _displayDetails =() =>{
-    console.log("modal");
+  _diaplayModal = () => {
+    console.log("Display Modal");
+
+    console.log("this.state.modalData " + this.state.modalData);
+    if (this.state.modalData.hasOwnProperty('servingSizes')) {
+      console.log(`comes inside`)
+      return (
+        <View>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={this.state.modalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+
+                <Text  >Calorie      : {this.state.modalData.nutrition.calories}  </Text>
+                <Text  >Total Carbs : {this.state.modalData.nutrition.totalCarbs}  </Text>
+                <Text  >Calcium      : {this.state.modalData.nutrition.calcium}  </Text>
+                <Text  >Sugar        : {this.state.modalData.nutrition.sugars}  </Text>
+                <Text  >VitaminC     : {this.state.modalData.nutrition.vitaminC}  </Text>
+                <Text  >SaturatedFat : {this.state.modalData.nutrition.saturatedFat}  </Text>
+                <Text  >Sodium       : {this.state.modalData.nutrition.sodium}  </Text>
+                <Text  >dietaryFiber : {this.state.modalData.nutrition.dietaryFiber}  </Text>
+
+                <Text  >Protien      : {this.state.modalData.nutrition.protien}  </Text>
+                <Text  >Cholesterol  : {this.state.modalData.nutrition.cholesterol}  </Text>
+                <Text  >Iron         : {this.state.modalData.nutrition.iron}  </Text>
+                <Text  >VitaminA     : {this.state.modalData.nutrition.vitaminA}  </Text>
+
+
+                <TouchableHighlight
+                  style={{ ...styles.openButton, backgroundColor: "#2196F3", marginTop: 10 }}
+                  onPress={() => {
+                    this._setModalVisible(!this.state.modalVisible);
+                  }}
+                >
+                  <Text style={styles.textStyle}>Close</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </Modal>
+        </View>
+      )
+    }
+
   }
+  _displayDetails = (item) => {
+    console.log(JSON.stringify(item));
+    this.setState({
+      modalData: item,
+      modalVisible: true
+    });
+    // this._diaplayModal(item);
+    // this._setModalVisible(true);
+
+  }
+  _setModalVisible = (val) => {
+    this.setState({
+      modalVisible: val
+    });
+  };
+  renderItem = data => {
+    // console.log("Test ::"+JSON.stringify(data));
+    return (
+      <View >
+        <Card style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <TouchableHighlight
+
+            onPress={() => {
+              this._displayDetails(data.item);
+            }}>
+
+            <Text >{data.item.name}  </Text>
+          </TouchableHighlight>
+        </Card>
+      </View>
+    )
+  }
+
   _showNutrition = () => {
 
     if (this.state.rdata == null) {
@@ -181,20 +290,86 @@ export default class CalorieCounterScreen extends Component {
     //     console.log("test we are here");
 
     return (
+
+
+
       <ScrollView >
-
-         {this.state.rdata.map(element => <Card>
-           <Text  onLongPress={this._displayDetails}>Name : {element.name}  </Text>
-           <Text  >Calorie : {element.name}  </Text>
-         </Card>)} 
-
-
-
-        {/* <FlatList
+        <FlatList
           data={this.state.rdata}
-          renderItem={ this._renderItem}
+          ItemSeparatorComponent={this.FlatListItemSeparator}
+          renderItem={item => this.renderItem(item)}
+          keyExtractor={item => item.name}
+          extraData={this.state}
+        />
+
+        {/* {this.state.rdata.map(element => 
          
-        /> */}
+         <View>
+
+
+         <Modal
+           animationType="slide"
+           transparent={true}
+           visible={this.state.modalVisible}
+           onRequestClose={() => {
+             Alert.alert("Modal has been closed.");
+           }}
+         >
+           <View style={styles.centeredView}>
+             <View style={styles.modalView}>
+             
+             <Text  >Calorie : {element.nutrition.calories}  </Text>
+             <Text  >Total Carbs : {element.nutrition.totalCarbs}  </Text>
+             <Text  >Calcium : {element.nutrition.calcium}  </Text>
+             <Text  >sugars : {element.nutrition.sugars}  </Text>
+             <Text  >vitaminC : {element.nutrition.vitaminC}  </Text>
+             <Text  >saturatedFat : {element.nutrition.saturatedFat}  </Text>
+             <Text  >sodium : {element.nutrition.sodium}  </Text>
+             <Text  >dietaryFiber : {element.nutrition.dietaryFiber}  </Text>
+
+             <Text  >protien : {element.nutrition.protien}  </Text>
+             <Text  >cholesterol : {element.nutrition.cholesterol}  </Text>
+             <Text  >iron : {element.nutrition.iron}  </Text>
+             <Text  >vitaminA : {element.nutrition.vitaminA}  </Text>
+
+
+               <TouchableHighlight
+                 style={{ ...styles.openButton, backgroundColor: "#2196F3",marginTop:10 }}
+                 onPress={() => {
+                   this._setModalVisible(!this.state.modalVisible);
+                 }}
+               >
+                 <Text style={styles.textStyle}>Close</Text>
+               </TouchableHighlight>
+             </View>
+           </View>
+         </Modal>
+
+        
+          <Card>
+          <TouchableHighlight
+
+onPress={() => {
+  this._setModalVisible(true);
+}}>
+  <View>
+           <Text  onLongPress={this._displayDetails}>Name : {element.name}  </Text>
+           <Text  >Calorie : {element.nutrition.calories}  </Text>
+           </View>
+           </TouchableHighlight>
+           
+         </Card>
+
+
+         
+        
+       </View>
+         )
+         }  */}
+
+
+
+
       </ScrollView>
     );
 
@@ -208,7 +383,7 @@ export default class CalorieCounterScreen extends Component {
 
   };
 
- 
+
   _displayNutrition = (item, index, array) => {
     console.log("Food " + item.name);
     console.log("Serving Size " + item.servingSizes.unit);

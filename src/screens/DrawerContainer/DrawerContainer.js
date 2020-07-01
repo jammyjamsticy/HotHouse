@@ -34,14 +34,14 @@ export default class DrawerContainer extends React.Component {
               navigation.closeDrawer();
             }}
           />
-          <MenuButton
+          {/* <MenuButton
             title="SUBMIT RECIPES"
-            source={require('../../../assets/icons/search.png')}
+            source={require('../../../assets/icons/upload.png')}
             onPress={() => {
               navigation.navigate('Submit');
               navigation.closeDrawer();
             }}
-          />
+          /> */}
        
         </View>
       </View>

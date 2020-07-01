@@ -5,6 +5,8 @@ const imageDontKnowURI = Asset.fromModule(require('../../assets/DontKnowWhatToCo
 const imageIkanPariCurryURI = Asset.fromModule(require('../../assets/Ikan_Pari_Curry.png')).uri;
 const imagePeachCakeURI = Asset.fromModule(require('../../assets/PeachCake.png')).uri;
 const imageVeganIconURI = Asset.fromModule(require('../../assets/vegan.png')).uri;
+const imageVideoIconURI = Asset.fromModule(require('../../assets/video.png')).uri;
+const videoIkanPariCurryURI = Asset.fromModule(require('../../assets/Ikan_Pari_Curry.mp4')).uri;
 export const categories = [
   {
     id: 3,
@@ -219,6 +221,9 @@ export const recipes = [
     title: 'Ikan Pari Curry',
     photo_url:imageIkanPariCurryURI,
     photosArray: [imageIkanPariCurryURI],
+    video:'Y',
+    video_url:videoIkanPariCurryURI,
+    video_icon:imageVideoIconURI,
     time: 35,
     ingredients: [
       [9, '1/2 teaspoons'],
@@ -248,7 +253,10 @@ export const recipes = [
     photosArray: [imagePeachCakeURI],
     time: 35,
     vegan:'Y',
-    // icon_vegan:imageVeganIconURI,
+    icon_vegan:imageVeganIconURI,
+    video:'',
+    video_url:'',
+    video_icon:'',
     ingredients: [
       [9, '1/2 teaspoons'],
       [0, '4 tablespoons'],
@@ -268,6 +276,9 @@ export const recipes = [
     description:
 ' -- Wan Kamg Chan\’s Story	Memorable cake as first date birthday cake and wedding anniversary cake for loving couple. Homemade, nice, simple and healthy. \n\n -- 1. Mix (B) then add it into (A) and stir constantly till well blended, then bring it into the boil. 2. Add (C) and (D) mix till evenly blended 3. Arrange (E) on the bottom of a 9" round mould (any mould shape prefer). Pour the above konnyaku syrup onto it and let it 3/4 set. Bottom: 1. Mix (B) add it into (A) and mix till well blended and bring to the boil. Add the premixed (C) slowly and continue to cook till mixture thickens. 2. Pour it onto the peach konnayku and let it cool and refrigerate. 3. Remove from mould and serve cold.'
   },
+
+
+
   {
     recipeId: 6,
     categoryId: 2,

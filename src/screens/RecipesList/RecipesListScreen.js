@@ -8,11 +8,12 @@ import {
 } from 'react-native';
 import styles from './styles';
 import { getRecipes, getCategoryName } from '../../data/MockDataAPI';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 export default class RecipesListScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: navigation.getParam('title')
+     
     };
   };
 
@@ -31,8 +32,11 @@ export default class RecipesListScreen extends React.Component {
         <Text style={styles.title}>{item.title}</Text>
         </View>
     </TouchableHighlight>
+    
   );
-
+_submitPage = ()=>{
+  this.props.navigation.navigate('Submit');
+}
   render() {
     const { navigation } = this.props;
     const item = navigation.getParam('category');
@@ -47,6 +51,13 @@ export default class RecipesListScreen extends React.Component {
           renderItem={this.renderRecipes}
           keyExtractor={item => `${item.recipeId}`}
         />
+        <View style={{height:250,justifyContent:'center',alignItems:'center'}}>
+        <TouchableHighlight  onPress={() => this._submitPage()}>
+          <View style={{height:100, width:100,backgroundColor:'red',borderRadius:100/2,alignItems:'center',justifyContent:'center'}}>
+          <Icon name="plus" size={50} color="#FFFFFF"  /> 
+          </View>
+       </TouchableHighlight>
+        </View>
       </View>
     );
   }

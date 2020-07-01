@@ -6,23 +6,23 @@ import {
   Image,
   Share,
   StatusBar,
-  StyleSheet,
   Text,
   TouchableOpacity,
   ScrollView,
   View,
   FlatList,
   TextInput,
-  Alert
-
+  Alert,
+  TouchableHighlight
 } from "react-native";
+import styles from './styles';
 import { Constants } from "expo";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import Card from '../../components/Card';
 import Colors from '../../constants/colors';
-
-import { CheckBox, Icon } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { CheckBox } from 'react-native-elements';
 import Textarea from 'react-native-textarea';
 
 export default class App extends Component {
@@ -30,104 +30,254 @@ export default class App extends Component {
     image: null,
     uploading: false,
     checked: false,
+    title: '',
+    caption: '',
+    instructions: '',
+    time: '',
+    categoryId: '',
+    name: '',
+    amt: '',
+    metric: '',
+    addedIngredients: [],
+    ingredients: [
+      {
+        key: 1,
+        name: '',
+        amount: '',
+        metrick: ''
+      }
+    ],
+    categories: [
+      {
+        id: 1,
+        name: 'Low\nFat',
+        color: 'skyblue',
+      },
+      {
+        id: 2,
+        name: 'Sugar\nFree',
+        color: 'skyblue'
+      },
+      {
+        id: 3,
+        name: 'Lactose\nFree',
+        color: 'skyblue'
+      },
+      {
+        id: 4,
+        name: 'Gulten\nFree',
+        color: 'skyblue'
+      },
+      {
+        id: 5,
+        name: 'Fish\nFree',
+        color: 'skyblue'
+      }
+    ],
   };
+
+  onSubmit() {
+    const { title, caption, instructions, time } = this.state;
+    Alert.alert('Your Recipe has been Submitted...!!!');
+    //Alert.alert('Title', `${title}` + 'Caption' + `${caption}` + 'Instruction' + `${instructions}` + 'Time' + `${time}`);
+  }
+
+  renderCategories = (item) => {
+    return (
+      <TouchableOpacity style={{
+        height: 80, width: 80, padding: 5,
+        borderRadius: 80 / 2, backgroundColor: item.item.color,
+        justifyContent: 'center', marginLeft: 5
+      }} onPress={() => this.showCategory(item.item.id)}>
+        <Text style={{ textAlign: 'center' }}>{item.item.name}</Text></TouchableOpacity>
+    )
+  }
+  showCategory = (selectedId) => {
+    const data = this.state.categories
+
+    const selItem = data.findIndex((obj => obj.id == selectedId))
+    if (data[selItem].color === 'red') {
+      data[selItem].color = 'skyblue'
+    } else {
+      data[selItem].color = 'red'
+    }
+    this.setState({ categories: data })
+  }
+
+
+  _renderRow = () => {
+    return (
+      <View style={{ flex: 1, flexDirection: 'row', }}>
+        <View style={{ width: '45%', height: 50, paddingRight: 5 }}>
+          <TextInput
+            value={this.state.name}
+            onChangeText={(name) => this.setState({ name })}
+            containerStyle={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}
+            style={{
+              width: '100%', borderColor: 'gray', borderWidth: 1, height: 50, textAlignVertical: 'top',
+              borderRadius: 5, backgroundColor: '#FFFFFF'
+            }}
+            placeholder="Name"
+          />
+        </View>
+        <View style={{ width: '20%', height: 50, paddingRight: 5 }}>
+          <TextInput
+            value={this.state.amt}
+            onChangeText={(amt) => this.setState({ amt })}
+            containerStyle={{ width: '100%', flexDirection: 'row', backgroundColor: 'FFFFFF' }}
+            style={{
+              width: '100%', borderColor: 'gray', borderWidth: 1, height: 50, textAlignVertical: 'top',
+              borderRadius: 5, backgroundColor: '#FFFFFF'
+            }}
+            placeholder="Amt"
+          />
+        </View>
+        <View style={{ width: '20%', height: 50, }}>
+          <TextInput
+            value={this.state.metric}
+            onChangeText={(metric) => this.setState({ metric })}
+            containerStyle={{ width: '100%', flexDirection: 'row' }}
+            style={{ width: '100%', borderColor: 'gray', borderWidth: 1, height: 50, textAlignVertical: 'top', borderRadius: 5, backgroundColor: '#FFFFFF' }}
+            placeholder="Metric"
+          />
+        </View>
+        <View style={{ width: '15%', height: 50, justifyContent: 'center', alignItems: 'center' }}>
+          <Icon name="plus" size={30} color="#900" onPress={() => this._addRow(this)} />
+        </View>
+      </View>
+    )
+  }
+  _addRow = (item) => {
+    let dataArray = this.state.ingredients;
+    const lastItem = dataArray.slice(-1).pop()
+    const newKey = lastItem.key++
+    const newItem = {
+      key: newKey,
+      name: '',
+      amount: '',
+      metrick: ''
+    }
+    dataArray.push(newItem);
+    this.setState({ ingredients: dataArray });
+  }
 
   render() {
     let { image } = this.state;
 
     return (
       <ScrollView>
-        <View style={styles.container}>
-
-          <StatusBar barStyle="default" />
-
-          <Card style={styles.inputContainer}>
-            <Text style={styles.exampleText}>
-              Upload Your Recipe
-            </Text>
-            <View style={styles.buttonContainer}>
-              <View style={styles.button}>
-                <Button
-                  onPress={this._pickImage}
-                  title="Gallery"
-                  color={Colors.primary}
-                /></View>
-              <View style={styles.button}>
-                <Button onPress={this._takePhoto} title="Camera" color={Colors.success} />
+          <View style={styles.container}>
+            <StatusBar barStyle="default" />
+            <Card style={styles.inputContainer}>
+              <Text style={styles.exampleText}>
+                Upload Your Food
+              </Text>
+              <View style={styles.buttonContainer}>
+              <View style={{ width: '50%', backgroundColor: '#FFFFFF',alignItems:'flex-end' }}>
+                <TouchableHighlight onPress={this._pickImage}>
+                  <Image source={require('../../../assets/GalleryIcon.png')} style={styles.categoriesPhoto} />
+                </TouchableHighlight>
+              </View>
+              <View style={{width:30}}></View>
+              <View style={{ width: '50%',marginRight:15,marginTop:5,marginRight:20 }}>
+                <TouchableHighlight onPress={this._takePhoto}>
+                  <Image source={require('../../../assets/CameraIcon.png')} style={styles.categoriesPhoto} />
+                </TouchableHighlight>
               </View>
             </View>
-          </Card>
+            </Card>
 
-          {this._maybeRenderImage()}
-          {this._maybeRenderUploadingOverlay()}
-          {/* {this._showNutrition()} */}
+            {this._maybeRenderImage()}
+            {this._maybeRenderUploadingOverlay()}
+            {/* {this._showNutrition()} */}
 
-
-          <TextInput
-            containerStyle={styles.textContainer}
-            style={styles.text}
-            placeholder="Title"
-          />
-          <Textarea
-            containerStyle={styles.textareaContainer}
-            style={styles.textarea}
-            placeholder="Caption"
-          />
-
-          <Card style={styles.inputContainer1}>
-            <Text style={styles.exampleText1}>ingredients</Text>
-            <View style={styles.viewTextContainer}>
-
-              <TextInput
-                containerStyle={styles.textNameContainer}
-                style={styles.textName}
-                placeholder="Name"
-              />
-              <TextInput
-                containerStyle={styles.textAmtContainer}
-                style={styles.textAmt}
-                placeholder="Amt"
-              />
-              <TextInput
-                containerStyle={styles.textMetContainer}
-                style={styles.textMet}
-                placeholder="Metric"
-              />
-              <Icon
-              raised
-              name="plus-square"
-              type="font-awesome"
-              color="red"
-              size={15}
-              onPress={() => this.goToStore()}
+            <TextInput
+              value={this.state.title}
+              onChangeText={(title) => this.setState({ title })}
+              containerStyle={styles.textContainer}
+              style={styles.text2}
+              placeholder="Title"
             />
+            <Textarea
+              value={this.state.caption}
+              onChangeText={(caption) => this.setState({ caption })}
+              containerStyle={styles.textareaContainer}
+              style={styles.textarea}
+              placeholder="Caption"
+            />
+
+            <View style={{ width: '100%', height: 300, borderWidth: 1, borderColor: 'grey', flex: 1, 
+            flexDirection: 'column', marginTop: -40, marginBottom: 10,borderRadius:5 }}>
+              <View style={{ width: '100%', height: '30%' }}>
+                <View style={{ flex: 1, flexDirection: 'row', height: '20%' }}>
+                  <View style={{ width: '50%', height: 60, justifyContent: 'center', paddingLeft: 15 }}>
+                    <Text style={{ fontSize: 20 }}>Ingredients</Text>
+                  </View>
+                  <View style={{ width: '50%', height: 60, justifyContent: 'center', padding: 8 }}>
+                    <TextInput
+                      containerStyle={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}
+                      style={{ width: '100%', borderColor: 'gray', borderWidth: 1, height: 45, textAlignVertical: 'top', borderRadius: 5, backgroundColor: '#FFFFFF' }}
+                      placeholder="Serving"
+                    />
+                  </View>
+                </View>
+              </View>
+              <View style={{ width: '100%', height: '70%', paddingLeft: 10, paddingRight: 10, marginTop: 5 }}>
+                <FlatList
+                  data={this.state.ingredients}
+                  renderItem={this._renderRow}
+                  keyExtractor={(item, index) => index.toString()}
+                  extraData={this.state}
+                />
+              </View>
             </View>
-          </Card>
 
-          <Textarea
-            containerStyle={styles.textareaContainer}
-            style={styles.textarea}
-            placeholder="Instructions"
-          />
+            <Textarea
+              value={this.state.instructions}
+              onChangeText={(instructions) => this.setState({ instructions })}
+              containerStyle={styles.textareaContainer}
+              style={styles.textarea}
+              placeholder="Instructions"
+            />
 
-          <TextInput
-            containerStyle={styles.textContainer}
-            style={styles.text}
-            placeholder="Time"
-          />
+            <TextInput
+              value={this.state.time}
+              onChangeText={(time) => this.setState({ time })}
+              containerStyle={styles.textContainer}
+              style={styles.text}
+              placeholder="Time"
+            />
 
-          <CheckBox
-            title="I agree to allow Pluse to share and xxxxxxxxxx"
-            checked={this.state.checked}
-            onPress={() => this.setState({ checked: !this.state.checked })}
-          />
+            <Card style={styles.inputContainer1}>
+              <FlatList
+                placeholder="CategoryId"
+                value={this.state.categoryId}
+                onChangeText={(categoryId) => this.setState({ categoryId })}
+                data={this.state.categories}
+                renderItem={(item) => this.renderCategories(item)}
+                keyExtractor={(item, index) => index.toString()}
+                extraData={this.state}
+                horizontal={true}
+              />
+            </Card>
 
-          <Button
-            title="SUBMIT"
-            onPress={() => Alert.alert('Simple Button pressed')}
-          />
 
-        </View>
+            <View style={styles.checkContainer}>
+              <CheckBox
+                title="I agree to allow Pluse to share and xxxxxxxxxx"
+                checked={this.state.checked}
+                onPress={() => this.setState({ checked: !this.state.checked })}
+                style={styles.checkbox}
+              />
+            </View>
+
+            <Button
+              title="SUBMIT"
+              //onPress={() => Alert.alert('Simple Button pressed')}
+              onPress={this.onSubmit.bind(this)}
+            />
+
+          </View>
       </ScrollView  >
     );
   }
@@ -266,160 +416,3 @@ export default class App extends Component {
     console.log("Sugar " + item.nutrition.sugars);
   };
 }
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-    flex: 1,
-    // justifyContent: "center",
-  },
-  exampleText: {
-    fontSize: 20,
-    marginBottom: 20,
-    marginHorizontal: 15,
-    textAlign: "center",
-  },
-  maybeRenderUploading: {
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.4)",
-    justifyContent: "center",
-  },
-  maybeRenderContainer: {
-    borderRadius: 3,
-    elevation: 2,
-    marginTop: 30,
-    shadowColor: "rgba(0,0,0,1)",
-    shadowOpacity: 0.2,
-    shadowOffset: {
-      height: 4,
-      width: 4,
-    },
-    shadowRadius: 5,
-    width: 250,
-  },
-  maybeRenderImageContainer: {
-    borderTopLeftRadius: 3,
-    borderTopRightRadius: 3,
-    overflow: "hidden",
-    marginTop: 30
-  },
-  maybeRenderImage: {
-    height: 250,
-    width: 250,
-  },
-  maybeRenderImageText: {
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-  },
-  button: {
-    width: 100
-  },
-  buttonContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 15,
-    marginTop: 20
-
-  },
-  viewTextContainer: {
-    width: '75%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  inputContainer: {
-    width: 300,
-    maxWidth: '80%',
-    alignItems: 'center',
-    marginTop: 20
-  },
-  textContainer: {
-    height: 10,
-    padding: 5,
-    //backgroundColor: '#F5FCFF',
-  },
-  text: {
-    textAlignVertical: 'top',  // hack android
-    height: 40,
-    fontSize: 14,
-    borderColor: 'gray',
-    width: "75%",
-    borderWidth: 1,
-    marginBottom: 20,
-    margin: 8,
-  },
-  textNameContainer: {
-    height: 10,
-    //padding: 5,
-    //backgroundColor: '#F5FCFF',
-  },
-  textName: {
-    textAlignVertical: 'top',  // hack android
-    height: 40,
-    fontSize: 14,
-    borderColor: 'gray',
-    width: "50%",
-    borderWidth: 1,
-    marginBottom: 20,
-    margin: 8,
-  },
-  textAmtContainer: {
-    height: 10,
-    //padding: 5,
-    //backgroundColor: '#F5FCFF',
-  },
-  textAmt: {
-    textAlignVertical: 'top',  // hack android
-    height: 40,
-    fontSize: 14,
-    borderColor: 'gray',
-    width: "25%",
-    borderWidth: 1,
-    marginBottom: 20,
-    margin: 8,
-  },
-  textMetContainer: {
-    height: 10,
-    //padding: 5,
-    //backgroundColor: '#F5FCFF',
-  },
-  textMet: {
-    textAlignVertical: 'top',  // hack android
-    height: 40,
-    fontSize: 14,
-    borderColor: 'gray',
-    width: "25%",
-    borderWidth: 1,
-    marginBottom: 20,
-    margin: 8,
-    
-  },
-  textareaContainer: {
-    height: 180,
-    padding: 5,
-    alignItems: 'center',
-    //backgroundColor: '#F5FCFF',
-  },
-  textarea: {
-    textAlignVertical: 'top',  // hack android
-    height: 150,
-    fontSize: 14,
-    borderColor: 'gray',
-    width: "75%",
-    borderWidth: 1,
-    marginBottom: 20,
-    margin: 8,
-  },
-  exampleText1: {
-    //textAlignVertical: 'top',
-    marginBottom: 20,
-    marginHorizontal: 15,
-    margin: 8,
-  },
-  inputContainer1: {
-    textAlignVertical: 'top',
-    alignItems: 'center',
-    width: '75%',
-    marginTop: 20,
-  },
-});

@@ -6,12 +6,16 @@ const styles = StyleSheet.create({
       alignItems: "center",
       flex: 1,
       // justifyContent: "center",
+     
+     
     },
     exampleText: {
       fontSize: 20,
       marginBottom: 20,
       marginHorizontal: 15,
       textAlign: "center",
+      color:'#f70000',
+      fontWeight:'bold'
     },
     maybeRenderUploading: {
       alignItems: "center",
@@ -29,13 +33,17 @@ const styles = StyleSheet.create({
         width: 4,
       },
       shadowRadius: 5,
-      width: 250,
+      width: 300,
+      alignItems: "center",
+      justifyContent: "center",
     },
     maybeRenderImageContainer: {
       borderTopLeftRadius: 3,
       borderTopRightRadius: 3,
       overflow: "hidden",
-      marginTop: 30
+      marginTop: 30,
+      alignItems: "center",
+      justifyContent: "center",
     },
     maybeRenderImage: {
       height: 250,
@@ -51,16 +59,48 @@ const styles = StyleSheet.create({
     buttonContainer: {
       width: '100%',
       flexDirection: 'row',
-      justifyContent: 'space-between',
+      justifyContent: 'space-evenly',
       paddingHorizontal: 15,
       marginTop: 20
   
     },
     inputContainer: {
-      width: 300,
+      width: 400,
       maxWidth: '80%',
       alignItems: 'center',
-      marginTop: 20
+      marginTop: 20,
+      backgroundColor:"#ffffff"
     },
+    modalView: {
+      margin: 20,
+      backgroundColor: "white",
+      borderRadius: 20,
+      padding: 35,
+      alignItems: "center",
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5
+    },
+    openButton: {
+      backgroundColor: "#F194FF",
+      borderRadius: 20,
+      padding: 10,
+      elevation: 2
+    },
+    textStyle: {
+      color: "white",
+      fontWeight: "bold",
+      textAlign: "center"
+    },
+    modalText: {
+      marginBottom: 15,
+      textAlign: "center",
+      marginTop:15
+    }
   });
   export default styles;
