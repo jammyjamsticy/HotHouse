@@ -48,6 +48,18 @@ export const RecipeCard = StyleSheet.create({
   iconStyle: {
     width: 50,
     height: 50
+  },
+  infoIcon: {
+    height: 30,
+    width: 30,
+    marginRight: 0,
+    marginBottom:10
+  },
+  iconContainer:{
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection:'row'
   }
 
 });

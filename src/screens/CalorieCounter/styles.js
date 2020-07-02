@@ -73,18 +73,19 @@ const styles = StyleSheet.create({
     },
     modalView: {
       margin: 20,
-      backgroundColor: "white",
+       backgroundColor: "white",
       borderRadius: 20,
-      padding: 35,
-      alignItems: "center",
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      elevation: 5
+       padding: 35,
+       alignItems: "center",
+       shadowColor: "#000",
+       justifyContent:"center",
+       shadowOffset: {
+         width: 0,
+         height: 2
+       },
+       shadowOpacity: 0.25,
+       shadowRadius: 3.84,
+       elevation: 5
     },
     openButton: {
       backgroundColor: "#F194FF",
@@ -101,6 +102,12 @@ const styles = StyleSheet.create({
       marginBottom: 15,
       textAlign: "center",
       marginTop:15
+    },
+    gridText:{
+      color: "black",
+      fontWeight: "bold",
+      textAlign: "center",
+      fontSize:20
     }
   });
   export default styles;

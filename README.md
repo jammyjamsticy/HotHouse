@@ -1,5 +1,3 @@
-# Recipes App in React Native
-
 
 ## Features
 - Recipes List

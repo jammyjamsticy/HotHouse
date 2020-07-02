@@ -13,7 +13,8 @@ import {
   View,
   FlatList,
   Modal,
-  TouchableHighlight
+  TouchableHighlight,
+  Dimensions
 
 } from "react-native";
 import styles from './styles';
@@ -25,6 +26,17 @@ import Card from '../../components/Card';
 import Colors from '../../constants/colors';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Col, Row, Grid } from "react-native-easy-grid";
+import Loader from "react-native-modal-loader";
+
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart,
+} from 'react-native-chart-kit';
+
 export default class CalorieCounterScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -36,7 +48,12 @@ export default class CalorieCounterScreen extends Component {
     uploading: false,
     rdata: null,
     modalVisible: false,
-    modalData: {}
+    modalData: {},
+    isLoading: false
+  };
+
+  _showLoader = (val) => {
+    this.setState({ isLoading: val });
   };
 
   render() {
@@ -47,7 +64,7 @@ export default class CalorieCounterScreen extends Component {
         <View style={styles.container}>
           {/* <Header title="My Calorie Counter" /> */}
           <StatusBar barStyle="default" />
-
+          <Loader loading={this.state.isLoading} color="#ff66be" />
           <Card style={styles.inputContainer} >
             <Text style={styles.exampleText}>
               Know Your Food
@@ -73,21 +90,24 @@ export default class CalorieCounterScreen extends Component {
                   <Image style={{
                     marginTop: 5, width: 100, height: 100, borderRadius: 100 / 2, shadowColor: 'black',
                     shadowOffset: { width: 7, height: 7 },
-                    shadowRadius: 5,shadowOpacity: 0.26,
+                    shadowRadius: 5, shadowOpacity: 0.26,
                     borderColor: 'black',
-                    elevation:1,
+                    elevation: 1,
                   }} source={require('../../../assets/CameraIcon.png')} />
                 </TouchableOpacity>
               </View>
 
             </View>
             <View style={{ alignItems: "center", justifyContent: "center" }}>
+
               {this._maybeRenderImage()}
               {this._maybeRenderUploadingOverlay()}
               {/* {this._showNutrition()} */}
               {this._diaplayModal()}
+
             </View>
           </Card>
+
 
 
 
@@ -97,6 +117,7 @@ export default class CalorieCounterScreen extends Component {
   }
 
   _maybeRenderUploadingOverlay = () => {
+
     if (this.state.uploading) {
       return (
         <View style={[StyleSheet.absoluteFill, styles.maybeRenderUploading]}>
@@ -125,7 +146,9 @@ export default class CalorieCounterScreen extends Component {
           style={styles.maybeRenderImageText}
         >
         </Text>
+
         {this._showNutrition()}
+
       </View>
 
     );
@@ -158,6 +181,7 @@ export default class CalorieCounterScreen extends Component {
       let pickerResult = await ImagePicker.launchCameraAsync({
         allowsEditing: true,
         aspect: [4, 3],
+
       });
 
       if (!pickerResult.cancelled) {
@@ -187,6 +211,7 @@ export default class CalorieCounterScreen extends Component {
 
       this.uploadImageAsync(pickerResult.uri);
       console.log(pickerResult.uri);
+
     }
   };
   // _renderItem = element => {
@@ -217,30 +242,67 @@ export default class CalorieCounterScreen extends Component {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
 
-              <Grid style={{color:'black'}}>
+                <Grid style={{ color: 'black' }}>
                   <Row>
                     <Col>
-                   <Text style={{color:'red'}}>Calorie</Text>
-                   </Col>
-                   <Col>
-                   <Text>{this.state.modalData.nutrition.calories}</Text>
-                   </Col>
+                      <Text style={{ color: 'red' }}>Calorie</Text>
+                    </Col>
+                    <Col>
+                      <Text>{this.state.modalData.nutrition.calories}</Text>
+                    </Col>
                   </Row>
-                  </Grid>
+                </Grid>
 
-                <Text  >Calorie      : {this.state.modalData.nutrition.calories}  </Text>
-                <Text  >Total Carbs : {this.state.modalData.nutrition.totalCarbs}  </Text>
-                <Text  >Calcium      : {this.state.modalData.nutrition.calcium}  </Text>
-                <Text  >Sugar        : {this.state.modalData.nutrition.sugars}  </Text>
-                <Text  >VitaminC     : {this.state.modalData.nutrition.vitaminC}  </Text>
-                <Text  >SaturatedFat : {this.state.modalData.nutrition.saturatedFat}  </Text>
-                <Text  >Sodium       : {this.state.modalData.nutrition.sodium}  </Text>
-                <Text  >dietaryFiber : {this.state.modalData.nutrition.dietaryFiber}  </Text>
+                <BarChart
+                  data={{
+                    labels: [
+                      'Calorie',
+                      'Total Carbs',
+                      'calcium',
+                      'VitaminC'
+                    ],
+                    datasets: [
+                      {
+                        data: [
+                          this.state.modalData.nutrition.calories, 
+                          this.state.modalData.nutrition.totalCarbs,
+                          this.state.modalData.nutrition.calcium, 
+                          this.state.modalData.nutrition.vitaminC,
+                          ],
+                      },
+                    ],
+                  }}
+                  width={Dimensions.get('window').width - 60}
+                  height={220}
+                  yAxisLabel={''}
+                  chartConfig={{
+                    backgroundColor: '#1cc910',
+                    backgroundGradientFrom: '#eff3ff',
+                    backgroundGradientTo: '#efefef',
+                    decimalPlaces: 2,
+                    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                    style: {
+                      borderRadius: 16,
+                    },
+                  }}
+                  style={{
+                    marginVertical: 8,
+                    borderRadius: 16,
+                  }}
+                />
+                <Text>Calorie      : {this.state.modalData.nutrition.calories}  </Text>
+                <Text>Total Carbs : {this.state.modalData.nutrition.totalCarbs}  </Text>
+                <Text>Calcium      : {this.state.modalData.nutrition.calcium}  </Text>
+                <Text>Sugar        : {this.state.modalData.nutrition.sugars}  </Text>
+                <Text>VitaminC     : {this.state.modalData.nutrition.vitaminC}  </Text>
+                <Text>SaturatedFat : {this.state.modalData.nutrition.saturatedFat}  </Text>
+                <Text>Sodium       : {this.state.modalData.nutrition.sodium}  </Text>
+                <Text>dietaryFiber : {this.state.modalData.nutrition.dietaryFiber}  </Text>
 
-                <Text  >Protien      : {this.state.modalData.nutrition.protien}  </Text>
-                <Text  >Cholesterol  : {this.state.modalData.nutrition.cholesterol}  </Text>
-                <Text  >Iron         : {this.state.modalData.nutrition.iron}  </Text>
-                <Text  >VitaminA     : {this.state.modalData.nutrition.vitaminA}  </Text>
+                <Text>Protien      : {this.state.modalData.nutrition.protien}  </Text>
+                <Text>Cholesterol  : {this.state.modalData.nutrition.cholesterol}  </Text>
+                <Text>Iron         : {this.state.modalData.nutrition.iron}  </Text>
+                <Text>VitaminA     : {this.state.modalData.nutrition.vitaminA}  </Text>
 
 
                 <TouchableHighlight
@@ -265,8 +327,7 @@ export default class CalorieCounterScreen extends Component {
       modalData: item,
       modalVisible: true
     });
-    // this._diaplayModal(item);
-    // this._setModalVisible(true);
+
 
   }
   _setModalVisible = (val) => {
@@ -276,20 +337,22 @@ export default class CalorieCounterScreen extends Component {
   };
   renderItem = data => {
     // console.log("Test ::"+JSON.stringify(data));
+
     return (
-      
-        <Card style={{ justifyContent: 'center', alignItems: 'center' ,padding:20}}>
-          <TouchableHighlight
 
-            onPress={() => {
-              this._displayDetails(data.item);
-            }}>
+      <Card style={{ justifyContent: 'center', alignItems: 'center', padding: 20 }}>
+        <TouchableHighlight
 
-            <Text >{data.item.name}  </Text>
-          </TouchableHighlight>
-        </Card>
-      
+          onPress={() => {
+            this._displayDetails(data.item);
+          }}>
+
+          <Text >{data.item.name}  </Text>
+        </TouchableHighlight>
+      </Card>
+
     )
+
   }
 
   _showNutrition = () => {
@@ -297,14 +360,8 @@ export default class CalorieCounterScreen extends Component {
     if (this.state.rdata == null) {
       return;
     }
-    //  this.state.rdata.forEach((element) => {
-    //     console.log("=========================="+element.name);
-    //     console.log("test we are here");
 
     return (
-
-
-
       <ScrollView >
         <FlatList
           data={this.state.rdata}
@@ -313,84 +370,8 @@ export default class CalorieCounterScreen extends Component {
           keyExtractor={item => item.name}
           extraData={this.state}
         />
-
-        {/* {this.state.rdata.map(element => 
-         
-         <View>
-
-
-         <Modal
-           animationType="slide"
-           transparent={true}
-           visible={this.state.modalVisible}
-           onRequestClose={() => {
-             Alert.alert("Modal has been closed.");
-           }}
-         >
-           <View style={styles.centeredView}>
-             <View style={styles.modalView}>
-             
-             <Text  >Calorie : {element.nutrition.calories}  </Text>
-             <Text  >Total Carbs : {element.nutrition.totalCarbs}  </Text>
-             <Text  >Calcium : {element.nutrition.calcium}  </Text>
-             <Text  >sugars : {element.nutrition.sugars}  </Text>
-             <Text  >vitaminC : {element.nutrition.vitaminC}  </Text>
-             <Text  >saturatedFat : {element.nutrition.saturatedFat}  </Text>
-             <Text  >sodium : {element.nutrition.sodium}  </Text>
-             <Text  >dietaryFiber : {element.nutrition.dietaryFiber}  </Text>
-
-             <Text  >protien : {element.nutrition.protien}  </Text>
-             <Text  >cholesterol : {element.nutrition.cholesterol}  </Text>
-             <Text  >iron : {element.nutrition.iron}  </Text>
-             <Text  >vitaminA : {element.nutrition.vitaminA}  </Text>
-
-
-               <TouchableHighlight
-                 style={{ ...styles.openButton, backgroundColor: "#2196F3",marginTop:10 }}
-                 onPress={() => {
-                   this._setModalVisible(!this.state.modalVisible);
-                 }}
-               >
-                 <Text style={styles.textStyle}>Close</Text>
-               </TouchableHighlight>
-             </View>
-           </View>
-         </Modal>
-
-        
-          <Card>
-          <TouchableHighlight
-
-onPress={() => {
-  this._setModalVisible(true);
-}}>
-  <View>
-           <Text  onLongPress={this._displayDetails}>Name : {element.name}  </Text>
-           <Text  >Calorie : {element.nutrition.calories}  </Text>
-           </View>
-           </TouchableHighlight>
-           
-         </Card>
-
-
-         
-        
-       </View>
-         )
-         }  */}
-
-
-
-
       </ScrollView>
-    );
-
-    //});
-
-    // data = response.results.items;
-    //data=rdata;
-    // rdata.forEach(displayNutrition);
-
+    )
 
 
   };
@@ -407,6 +388,7 @@ onPress={() => {
   };
 
   uploadImageAsync(pictureuri) {
+    this.setState({ isLoading: true })
     let apiUrl =
       "https://api-2445582032290.production.gw.apicast.io/v1/foodrecognition/full?user_key=ccec5d0dc8ac602942036a6ffbb86d77";
     var data = new FormData();
@@ -429,14 +411,15 @@ onPress={() => {
       .then((commits) => {
         console.log("success");
         let rdata1 = commits.results[0].items;
-        this.setState({ rdata: rdata1 });
-        rdata1.forEach((element) => {
+        this.setState({ rdata: rdata1, isLoading: false });
+        // rdata1.forEach((element) => {
 
-        });
+        // });
       })
       .catch((err) => {
         console.log("err ");
         console.log(err);
       });
+
   }
 }

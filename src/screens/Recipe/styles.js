@@ -66,6 +66,13 @@ const styles = StyleSheet.create({
     marginRight: 0,
     marginBottom:10
   },
+  infoVideo: {
+    height: 55,
+    width: 55,
+    marginRight: 0,
+    marginBottom:10
+  },
+
   infoRecipe: {
     fontSize: 14,
     fontWeight: 'bold',

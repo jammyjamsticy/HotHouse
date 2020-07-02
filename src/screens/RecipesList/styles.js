@@ -6,7 +6,9 @@ const styles = StyleSheet.create({
   photo: RecipeCard.photo,
   title: RecipeCard.title,
   category: RecipeCard.category,
-  iconStyle:RecipeCard.iconStyle
+  iconStyle:RecipeCard.iconStyle,
+  infoIcon:RecipeCard.infoIcon,
+  iconContainer:RecipeCard.iconContainer
 });
 
 export default styles;

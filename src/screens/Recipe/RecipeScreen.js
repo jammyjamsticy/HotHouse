@@ -111,7 +111,7 @@ export default class RecipeScreen extends React.Component {
             onPress={() => {
               this._setModalVisible(true);
             }}>
-            <Image style={styles.infoIcon} source={{ uri: item.video_icon }} />
+            <Image style={styles.infoVideo} source={{ uri: item.video_icon }} />
           </TouchableHighlight>
         </View>
       )
@@ -190,7 +190,7 @@ export default class RecipeScreen extends React.Component {
             <TouchableOpacity onPress={() => this._share()} >
               <View  >
                 <Image
-                  style={styles.infoIcon} source={require('../../../assets/share.png')} />
+                  style={{...styles.infoIcon,marginTop:6}} source={require('../../../assets/share.png')} />
               </View>
             </TouchableOpacity>
           </View>
