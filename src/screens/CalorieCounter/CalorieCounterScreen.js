@@ -24,6 +24,7 @@ import * as ImagePicker from "expo-image-picker";
 import Card from '../../components/Card';
 import Colors from '../../constants/colors';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Col, Row, Grid } from "react-native-easy-grid";
 export default class CalorieCounterScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -188,15 +189,15 @@ export default class CalorieCounterScreen extends Component {
       console.log(pickerResult.uri);
     }
   };
-  _renderItem = element => {
-    console.log("item is :: " + element.name);
-    return (
-      <TouchableOpacity>
-        <Text>Test</Text>
-      </TouchableOpacity>
-    )
+  // _renderItem = element => {
+  //   console.log("item is :: " + element.name);
+  //   return (
+  //     <TouchableOpacity>
+  //       <Text>Test</Text>
+  //     </TouchableOpacity>
+  //   )
 
-  };
+  // };
   _diaplayModal = () => {
     console.log("Display Modal");
 
@@ -215,6 +216,17 @@ export default class CalorieCounterScreen extends Component {
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
+
+              <Grid style={{color:'black'}}>
+                  <Row>
+                    <Col>
+                   <Text style={{color:'red'}}>Calorie</Text>
+                   </Col>
+                   <Col>
+                   <Text>{this.state.modalData.nutrition.calories}</Text>
+                   </Col>
+                  </Row>
+                  </Grid>
 
                 <Text  >Calorie      : {this.state.modalData.nutrition.calories}  </Text>
                 <Text  >Total Carbs : {this.state.modalData.nutrition.totalCarbs}  </Text>
@@ -265,8 +277,8 @@ export default class CalorieCounterScreen extends Component {
   renderItem = data => {
     // console.log("Test ::"+JSON.stringify(data));
     return (
-      <View >
-        <Card style={{ justifyContent: 'center', alignItems: 'center' }}>
+      
+        <Card style={{ justifyContent: 'center', alignItems: 'center' ,padding:20}}>
           <TouchableHighlight
 
             onPress={() => {
@@ -276,7 +288,7 @@ export default class CalorieCounterScreen extends Component {
             <Text >{data.item.name}  </Text>
           </TouchableHighlight>
         </Card>
-      </View>
+      
     )
   }
 

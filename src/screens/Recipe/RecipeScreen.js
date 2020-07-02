@@ -23,8 +23,6 @@ const { width: viewportWidth } = Dimensions.get('window');
 
 export default class RecipeScreen extends React.Component {
 
- 
-
   static navigationOptions = ({ navigation }) => {
     return {
       headerTransparent: 'true',
@@ -37,13 +35,12 @@ export default class RecipeScreen extends React.Component {
       )
     };
   };
-
   constructor(props) {
     super(props);
     this.state = {
       activeSlide: 0,
       vegan: null,
-    modalVisible: false
+      modalVisible: false
     };
   }
 
@@ -60,12 +57,7 @@ export default class RecipeScreen extends React.Component {
     Share.share({
       message: this.state.des,
       title: this.state.title,
-
-
     });
-
-
-
   };
   onPressIngredient = item => {
     var name = getIngredientName(item);
@@ -93,19 +85,17 @@ export default class RecipeScreen extends React.Component {
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-              <Video
-  source={{ uri: item.video_url }}
-  rate={1.0}
-  volume={1.0}
-  isMuted={false}
-  resizeMode="cover"
-  shouldPlay
-  
-  style={{ width: 300, height: 300 }}
-/>
-
+                <Video
+                  source={{ uri: item.video_url }}
+                  rate={1.0}
+                  volume={1.0}
+                  isMuted={false}
+                  resizeMode="cover"
+                  shouldPlay
+                  style={{ width: 300, height: 300 }}
+                />
                 <TouchableHighlight
-                  style={{ ...styles.openButton, backgroundColor: "#2196F3",marginTop:10 }}
+                  style={{ ...styles.openButton, backgroundColor: "#2196F3", marginTop: 10 }}
                   onPress={() => {
                     this._setModalVisible(!this.state.modalVisible);
                   }}
@@ -131,8 +121,6 @@ export default class RecipeScreen extends React.Component {
     }
   }
   _displayVeganIcon = (item) => {
-
-
     if (item.vegan === 'Y') {
       console.log("Yes");
 
@@ -143,9 +131,6 @@ export default class RecipeScreen extends React.Component {
       console.log("No");
       return null;
     }
-
-
-
   }
   render() {
     const { activeSlide } = this.state;
@@ -190,7 +175,6 @@ export default class RecipeScreen extends React.Component {
             />
           </View>
         </View>
-
         <View style={styles.infoRecipeContainer}>
           <Text style={styles.infoRecipeName}>{item.title}</Text>
           {/* <View style={styles.infoContainer}>
@@ -210,15 +194,11 @@ export default class RecipeScreen extends React.Component {
               </View>
             </TouchableOpacity>
           </View>
-
           {/* <Text>{this.state.vegan}</Text> */}
-
           <View style={styles.infoContainer}>
             <Image style={styles.infoPhoto} source={require('../../../assets/icons/time.png')} />
             <Text style={styles.infoRecipe}>{item.time} minutes </Text>
           </View>
-
-
           <View style={styles.infoContainer}>
             <ViewIngredientsButton
               onPress={() => {
@@ -236,11 +216,3 @@ export default class RecipeScreen extends React.Component {
     );
   }
 }
-
-/*cooking steps
-<View style={styles.infoContainer}>
-  <Image style={styles.infoPhoto} source={require('../../../assets/icons/info.png')} />
-  <Text style={styles.infoRecipe}>Cooking Steps</Text>
-</View>
-<Text style={styles.infoDescriptionRecipe}>{item.description}</Text>
-*/

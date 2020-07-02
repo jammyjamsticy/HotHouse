@@ -53,7 +53,7 @@ _submitPage = ()=>{
         />
         <View style={{height:250,justifyContent:'center',alignItems:'center'}}>
         <TouchableHighlight  onPress={() => this._submitPage()}>
-          <View style={{height:100, width:100,backgroundColor:'red',borderRadius:100/2,alignItems:'center',justifyContent:'center'}}>
+          <View style={{height:100, width:100,backgroundColor:'#802dc4',borderRadius:100/2,alignItems:'center',justifyContent:'center'}}>
           <Icon name="plus" size={50} color="#FFFFFF"  /> 
           </View>
        </TouchableHighlight>
